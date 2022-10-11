@@ -43,7 +43,8 @@ export const useForm = <Object extends object>({onSubmit, validator}: UseForm<Ob
       onChange: (event: React.FormEvent<HTMLInputElement>) => {
         if (!submitFailed.current)
           return
-        const result = validator.shape[name as string].safeParse(event.currentTarget.value)
+        const {value} = event.currentTarget
+        const result = validator.shape[name as string].safeParse(value === '' ? undefined : value)
         if (!result.success) {
           const {message, code} = result.error.errors[0]
           setErrors(prev => {
