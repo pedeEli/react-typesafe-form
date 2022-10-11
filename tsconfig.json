@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "inlineSourceMap": true,
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
+    "jsx": "react",
+    "strict": true,
+    "declaration": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "app"
+  ]
+}
