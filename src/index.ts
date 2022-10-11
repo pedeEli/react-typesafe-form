@@ -15,7 +15,8 @@ export const useForm = <Object extends object>({onSubmit, validator}: UseForm<Ob
     event.preventDefault()
 
     const obj = Array.from(inputMap.current.entries()).reduce<Record<string | number | symbol, string | undefined>>((acc, [name, {element}]) => {
-      acc[name] = element?.value
+      if (element?.value && element.value !== '')
+        acc[name] = element?.value
       return acc
     }, {})
 

@@ -2,7 +2,7 @@ import {useForm} from 'react-ts-form'
 import z from 'zod'
 
 const validator = z.object({
-  test: z.string().min(1)
+  test: z.string().min(4)
 })
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
     <form onSubmit={handleSubmit} onReset={reset} className="flex flex-col items-start gap-4">
       <div className="flex gap-4 items-center">
         <label htmlFor="test" className="text-lg">Test</label>
-        <input id="test" {...register('test', 'default')} type="text"/>
+        <input id="test" {...register('test')} type="text"/>
       </div>
       {errors.test && errors.test.message}
       <div className="flex gap-2">
