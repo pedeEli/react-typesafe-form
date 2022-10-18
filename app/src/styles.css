@@ -6,6 +6,6 @@ button, [type="reset"], [type="button"], [type="submit"] {
   @apply bg-slate-600 text-lg px-4 py-2 rounded shadow focus:outline-none focus:bg-slate-500;
 }
 
-input {
+input, select {
   @apply bg-slate-600 text-lg px-4 py-2 rounded focus:outline-none focus:bg-slate-500;
 }
