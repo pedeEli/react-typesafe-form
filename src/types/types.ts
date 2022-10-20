@@ -14,7 +14,7 @@ type ExtractPath<
   Prefix extends string
 > = A extends object
   ? A extends any[]
-  ? GetPaths<A[number], `${Prefix}.${K}.${number}`>
+  ? ExtractPath<A[number], number, Prefix extends '' ? `${K}` : `${Prefix}.${K}`>
   : GetPaths<A, Prefix extends '' ? `${K}` : `${Prefix}.${K}`>
   : Prefix extends '' ? `${K}` : `${Prefix}.${K}`
 
@@ -41,3 +41,10 @@ type GetObjectValueKeys<
 > = {
   [K in Keys]: O[K] extends object ? K : never
 }[Keys]
+
+
+
+export interface FormContext {
+  _registerFieldArray: (name: string) => void,
+  _unregisterFieldArray: (name: string) => void
+}
