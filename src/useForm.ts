@@ -1,5 +1,5 @@
 import {useRef, useState, useMemo} from 'react'
-import {ZodObject, ZodRawShape, ZodTypeAny, ZodTuple, ZodArray, AnyZodTuple, ZodOptional} from 'zod'
+import {ZodObject, ZodRawShape, ZodTypeAny, ZodTuple, ZodArray, AnyZodTuple, ZodOptional, AnyZodObject} from 'zod'
 import {
   TFormValue,
   UseFormProps,
@@ -11,6 +11,7 @@ import {
 
 export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormValue>): UseFormReturn<FormValue> => { 
   const initialError = getInitialError<FormValue>(props.validator)
+  console.log('initialError', initialError)
 
   const analisis = useMemo(() => analyzeValidator(props.validator), [props.validator])
 
@@ -130,18 +131,12 @@ const setValueAt = (obj: Record<string, any>, path: Array<string | number>, valu
 }
 
 const getErrorAt = (obj: Record<string, any>, path: Array<string>): FormError => {
-  if (path.length === 0)
-    throw new Error('path length cannot be zero')
+  for (let i = 0; i < path.length; i++) {
+    const key = path[i]
+    obj = obj[key]
+  }
 
-  const key = path.shift()!
-  const error = obj[key] as FormError | undefined
-  if (!error)
-    throw new Error(`unknown key: ${key}`)
-
-  if (path.length === 0)
-    return error
-
-  return getErrorAt(obj[key], path)
+  return obj as FormError
 }
 
 const deleteErrorAt = (obj: Record<string, any>, path: Array<string>): void => {
@@ -157,33 +152,68 @@ const deleteErrorAt = (obj: Record<string, any>, path: Array<string>): void => {
   deleteErrorAt(obj[key], path)
 }
 
-const getValidator = <Object extends object>(validator: ZodObject<ZodRawShape, any, any, Object>, path: Array<string>): ZodTypeAny => {
-  if (path.length === 0)
-    throw new Error('path length cannot be zero')
+const getValidator = (validator: ZodObject<ZodRawShape, any, any, TFormValue>, path: Array<string>): ZodTypeAny => {
+  let key: string
+  let val: ZodTypeAny = validator
 
-  const key = path.shift()!
-  const subValidator = validator.shape[key]
+  for (let i = 0; i < path.length; i++) {
+    key = path[i]
 
-  if (!subValidator)
-    throw new Error(`unknown key: ${key}`)
+    if (val instanceof ZodOptional)
+      val = val.unwrap()
 
-  if (path.length === 0)
-    return subValidator
+    if (val instanceof ZodObject) {
+      val = val.shape[key]
+    } else if (val instanceof ZodArray) {
+      val = val.element
+    } else if (val instanceof ZodTuple) {
+      val = val.items[key]
+    }
 
-  if (subValidator instanceof ZodObject)
-    return getValidator(subValidator, path)
+  }
 
-  throw new Error(`key is not a object validator: ${key}`)
+  return val
 }
 
 
-const getInitialError = <FormValue extends TFormValue>(validator: ZodObject<ZodRawShape, any, any, Object>) => {
-  return Object.entries(validator.shape).reduce<FormErrors<FormValue>>((acc, [key, value]) => {
-    if (value instanceof ZodObject) {
-      (acc as any)[key] = getInitialError(value)
-    }
-    return acc
-  }, {} as any)
+const getInitialError = <FormValue extends TFormValue>(validator: ZodObject<ZodRawShape, any, any, FormValue>) => {
+  return getInitialError_(validator) as FormErrors<FormValue>
+}
+
+const getInitialError_ = (validator: ZodTypeAny): object | undefined => {
+  if (validator instanceof ZodOptional)
+    return validator.unwrap()
+
+  if (validator instanceof ZodObject) {
+    return Object.entries((validator as ZodObject<ZodRawShape, any, any, TFormValue>).shape).reduce((acc, [key, val]) => {
+      const err = getInitialError_(val)
+      if (err)
+        acc[key] = err
+      return acc
+    }, {} as TFormValue)
+  }
+  
+  if (validator instanceof ZodArray) {
+    return {items: []} as any
+  }
+  
+  if (validator instanceof ZodTuple) {
+    return (validator.items as ZodTypeAny[]).reduce((acc, item, index) => {
+      const err = getInitialError_(item)
+      if (err)
+        acc[index] = err
+      return acc
+    }, [] as any)
+  }
+
+  return undefined
+
+  // return Object.entries(validator.shape).reduce<FormErrors<FormValue>>((acc, [key, value]) => {
+  //   if (value instanceof ZodObject) {
+  //     (acc as any)[key] = getInitialError(value)
+  //   }
+  //   return acc
+  // }, initial)
 }
 
 
