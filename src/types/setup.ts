@@ -1,0 +1,1 @@
+export type Analisis = Array<[RegExp, 'object' | 'array' | 'tuple']>
