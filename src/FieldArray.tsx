@@ -1,8 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 
 interface RenderProps {
-  items: Array<{id: string}>,
-  append: () => void
+  items: Array<{
+    id: string,
+    remove: () => void
+  }>,
+  append: () => void,
+  remove: (id: number | string) => void
 }
 
 interface NestedArrayProps {
@@ -10,18 +14,47 @@ interface NestedArrayProps {
 }
 
 export const FieldArray = (props: NestedArrayProps) => {
+  const ids = useRef(new Set<string>())
   const [items, setItems] = useState<RenderProps['items']>([])
 
   const append: RenderProps['append'] = () => {
     setItems(prev => {
-      return [...prev, {id: Math.random().toString(36)}]
+      const id = createId(ids.current)
+      return [...prev, {
+        id,
+        remove: () => {
+          setItems(prev => {
+            return prev.filter(item => item.id !== id)
+          })
+        }
+      }]
+    })
+  }
+
+  const remove: RenderProps['remove'] = (id) => {
+    if (typeof id === 'number') {
+      return setItems(prev => {
+        return [...prev.slice(0, id), ...prev.slice(id + 1)]
+      })
+    }
+    setItems(prev => {
+      return prev.filter(item => item.id !== id)
     })
   }
 
   return <>
     {props.render({
       items,
-      append
+      append,
+      remove
     })}
   </>
+}
+
+
+const createId = (ids: Set<string>): string => {
+  const id = Math.random().toString(36)
+  if (ids.has(id))
+    return createId(ids)
+  return id
 }
