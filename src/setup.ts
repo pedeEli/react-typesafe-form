@@ -54,7 +54,7 @@ export const analyzeValidator = (
     if (path)
       map.push([new RegExp(`^${path}$`), 'object'])
     Object.entries((validator as ZodObject<ZodRawShape, any, any, TFormValue>).shape).forEach(([key, val]) => {
-      const newPath = path ? `${path}\.${key}` : `${key}`
+      const newPath = path ? `${path}\.${key}` : key
       analyzeValidator(val, map, newPath)
     })
   } else if (validator instanceof ZodArray) {

@@ -13,11 +13,11 @@ import {
   UseFormReturn,
   FormErrors,
   UseFormRegister,
-  FormError,
   Analisis
 } from './types'
 import {getInitialError, analyzeValidator} from './setup'
 import {setError, deleteIfExists} from './errors'
+
 
 export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormValue>): UseFormReturn<FormValue> => { 
   const initialError = getInitialError<FormValue>(props.validator)

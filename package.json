@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "build:temp": "tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
