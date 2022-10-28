@@ -10,7 +10,8 @@ interface RenderProps {
   append: () => void,
   prepend: () => void,
   remove: (id: number | string) => void,
-  insert: (index: number) => void
+  insert: (index: number) => void,
+  swap: (id1: number | string, id2: number | string) => void
 }
 
 interface NestedArrayProps {
@@ -75,6 +76,19 @@ export const FieldArray = (props: NestedArrayProps) => {
     })
   }, [])
 
+  const swap: RenderProps['swap'] = useCallback((id1, id2) => {
+    setItems(prev => {
+      const index1 = typeof id1 === 'number' ? id1 : items.findIndex(item => item.id === id1)
+      const index2 = typeof id2 === 'number' ? id2 : items.findIndex(item => item.id === id2)
+      
+      const temp = prev[index1]
+      prev[index1] = prev[index2]
+      prev[index2] = temp
+
+      return [...prev]
+    })
+  }, [])
+
   const insert: RenderProps['insert'] = useCallback(index => {
     setItems(prev => {
       return [...prev.slice(0, index), createItem(), ...prev.slice(index)]
@@ -87,7 +101,8 @@ export const FieldArray = (props: NestedArrayProps) => {
       append,
       prepend,
       remove,
-      insert
+      insert,
+      swap
     })}
   </>
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useForm, FieldArray} from 'react-ts-form'
 import z from 'zod'
 
@@ -17,6 +17,17 @@ const App = () => {
     },
     validator
   })
+
+  const [selection, setSelection] = useState<number>()
+
+  const select = (index: number, swap: (id1: number, id2: number) => void) => () => {
+    if (selection === undefined) {
+      setSelection(index)
+      return
+    }
+    swap(selection, index)
+    setSelection(undefined)
+  }
 
   return <main>
     <h1 className="text-3xl">Input Testing</h1>
@@ -38,6 +49,7 @@ const App = () => {
                 <button type="button" onClick={() => person.append()}>Append</button>
                 <button type="button" onClick={() => person.prepend()}>Prepend</button>
                 <button type="button" onClick={() => persons.insert(index)}>Insert</button>
+                <button type="button" className={`${selection === index ? '!bg-green-700' : ''}`} onClick={select(index, persons.swap)}>Select</button>
               </div>
               {errors.persons.items[index]?.name?.message}
             </React.Fragment>
