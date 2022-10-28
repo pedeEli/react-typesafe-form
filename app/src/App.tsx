@@ -37,6 +37,7 @@ const App = () => {
                 <button type="button" onClick={() => person.remove()}>Delete</button>
                 <button type="button" onClick={() => person.append()}>Append</button>
                 <button type="button" onClick={() => person.prepend()}>Prepend</button>
+                <button type="button" onClick={() => persons.insert(index)}>Insert</button>
               </div>
               {errors.persons.items[index]?.name?.message}
             </React.Fragment>
