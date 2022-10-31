@@ -1,4 +1,4 @@
-import {UseFormRegisterArrayReturn} from './useForm'
+import type {UseFormRegisterArrayReturn} from './useForm'
 
 export interface RenderProps {
   items: Array<{

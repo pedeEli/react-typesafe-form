@@ -1,5 +1,5 @@
-import {TFormValue, KeyOf, BrowserNativeObject, IsTuple} from './common'
-import {ZodIssueCode} from 'zod'
+import type {TFormValue, KeyOf, BrowserNativeObject, IsTuple} from './common'
+import type {ZodIssueCode} from 'zod'
 
 export type FormError = {
   message: string,

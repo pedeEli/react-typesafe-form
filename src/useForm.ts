@@ -1,16 +1,12 @@
 import {useRef, useState, useMemo, useCallback} from 'react'
-import {
-  ZodObject,
-  ZodRawShape,
-  ZodTypeAny,
-  ZodTuple,
-  ZodArray,
-  ZodOptional
-} from 'zod'
+import {ZodArray} from 'zod'
+
 import {getInitialError, analyzeValidator} from './setup'
 import {setError, deleteIfExists} from './errors'
+import {clone, getValidator, getValueAt, setValueAt} from './utils'
 
 import type {TFormValue} from './types/common'
+import type {FormErrors} from './types/errors'
 import type {
   UseFormHandleSubmit,
   UseFormProps,
@@ -19,8 +15,6 @@ import type {
   UseFormReturn,
   UseFormRegisterArray
 } from './types/useForm'
-import type {Analisis} from './types/setup'
-import type {FormErrors} from './types/errors'
 
 
 export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormValue>): UseFormReturn<FormValue> => { 
@@ -153,65 +147,4 @@ export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormVa
     errors,
     registerArray
   }
-}
-
-
-
-const setValueAt = (obj: TFormValue, path: Array<string | number>, value: any, analisis: Analisis, totalPath: string[] = []): void => {
-  if (path.length === 0)
-    throw new Error('paths length cannot be zero')
-
-  const key = path.shift()!
-  if (path.length === 0) {
-    if (value === '')
-      return
-    return obj[key] = value
-  }
-
-  const newTotalPath = [...totalPath, `${key}`]
-  const type = analisis.find(([regex]) => regex.test(newTotalPath.join('.')))![1]
-  const subObj = obj[key] ?? (type === 'array' ? [] : {})
-  obj[key] = subObj
-  setValueAt(subObj, path, value, analisis, newTotalPath)
-}
-
-const getValueAt = (obj: TFormValue, path: string[]) => {
-  for (let i = 0; i < path.length; i++) {
-    const key = path[i]
-    obj = obj[key]
-  }
-  return obj
-}
-
-const getValidator = (validator: ZodObject<ZodRawShape, any, any, TFormValue>, path: Array<string>): ZodTypeAny => {
-  let val: ZodTypeAny = validator
-
-  for (let i = 0; i < path.length; i++) {
-    const key = path[i]
-
-    if (val instanceof ZodOptional)
-      val = val.unwrap()
-
-    if (val instanceof ZodObject) {
-      val = val.shape[key]
-    } else if (val instanceof ZodArray) {
-      val = val.element
-    } else if (val instanceof ZodTuple) {
-      val = val.items[key]
-    }
-
-  }
-
-  return val
-}
-
-const clone = <T>(value: T): T => {
-  if (Array.isArray(value))
-    return value.map(clone) as T
-  if (typeof value === 'object')
-    return Object.keys(value as object).reduce<TFormValue>((acc, key) => {
-      acc[key] = clone((value as any)[key])
-      return acc
-    }, {} as TFormValue) as T
-  return value
 }

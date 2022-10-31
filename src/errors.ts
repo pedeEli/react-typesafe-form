@@ -1,6 +1,7 @@
-import {FormErrors, FormError} from './types/errors'
-import {TFormValue} from './types/common'
-import {Analisis} from './types/setup'
+import type {FormErrors, FormError} from './types/errors'
+import type {TFormValue} from './types/common'
+import type {Analisis} from './types/setup'
+
 
 export const setError = (errors: FormErrors<TFormValue>, path: Array<string | number>, value: FormError, analisis: Analisis) => {
   const totalPath: string[] = []

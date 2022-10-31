@@ -1,15 +1,20 @@
+import {
+  ZodObject,
+  ZodOptional,
+  ZodArray,
+  ZodTuple
+} from 'zod'
+
+import type {
+  AnyZodTuple,
+  ZodRawShape,
+  ZodTypeAny
+} from 'zod'
+
 import type {Analisis} from './types/setup'
 import type {FormErrors} from './types/errors'
 import type {TFormValue} from './types/common'
-import {
-  ZodObject,
-  ZodRawShape,
-  ZodTypeAny,
-  ZodOptional,
-  ZodArray,
-  ZodTuple,
-  AnyZodTuple
-} from 'zod'
+
 
 export const getInitialError = <FormValue extends TFormValue>(validator: ZodObject<ZodRawShape, any, any, FormValue>) => {
   return getInitialErrorImpl(validator) as FormErrors<FormValue>
