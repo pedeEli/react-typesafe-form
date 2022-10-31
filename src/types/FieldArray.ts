@@ -14,6 +14,6 @@ export interface RenderProps {
   swap: (id1: number | string, id2: number | string) => void
 }
 
-export type NestedArrayProps = {
+export type FieldArrayProps = {
   render: (props: RenderProps) => JSX.Element | JSX.Element[],
 } & UseFormRegisterArrayReturn

@@ -2,10 +2,10 @@ import {useState, useRef, useCallback, useEffect} from 'react'
 
 import type React from 'react'
 
-import type {NestedArrayProps, RenderProps} from './types/FieldArray'
+import type {FieldArrayProps, RenderProps} from './types/FieldArray'
 
 
-export const FieldArray = (props: NestedArrayProps) => {
+export const FieldArray = (props: FieldArrayProps) => {
   const ids = useRef(new Set<string>())
   const [items, setItems] = useState<RenderProps['items']>([])
 
