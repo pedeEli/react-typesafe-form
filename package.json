@@ -1,21 +1,3 @@
 {
-  "name": "react-typesafe-form",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "build": "tsc"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/react": "^18.0.21",
-    "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "zod": "^3.19.1"
-  }
+  "name": "root"
 }

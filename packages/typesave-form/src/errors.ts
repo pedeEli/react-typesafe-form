@@ -35,7 +35,7 @@ export const deleteIfExists = <FormValue extends TFormValue>(
   errors: FormErrors<FormValue>,
   path: string[],
   analisis: Analisis,
-  setErrors: React.Dispatch<React.SetStateAction<FormErrors<FormValue>>>
+  setErrors: (errors: FormErrors<FormValue>) => void
 ) => {
   const totalPath: string[] = []
   let obj: TFormValue = errors

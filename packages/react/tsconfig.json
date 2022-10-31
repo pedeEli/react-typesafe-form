@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "inlineSourceMap": true,
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
+    "jsx": "react",
+    "strict": true,
+    "declaration": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "typesave-form": ["../typesave-form/src"],
+      "typesave-form/*": ["../typesave-form/src/*"]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

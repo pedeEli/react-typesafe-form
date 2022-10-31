@@ -1,12 +1,12 @@
 import {useRef, useState, useMemo, useCallback} from 'react'
 import {ZodArray} from 'zod'
 
-import {getInitialError, analyzeValidator} from './setup'
-import {setError, deleteIfExists} from './errors'
-import {clone, getValidator, getValueAt, setValueAt} from './utils'
+import {getInitialError, analyzeValidator} from 'typesave-form/setup'
+import {setError, deleteIfExists} from 'typesave-form/errors'
+import {clone, getValidator, getValueAt, setValueAt} from 'typesave-form/utils'
 
-import type {TFormValue} from './types/common'
-import type {FormErrors} from './types/errors'
+import type {TFormValue} from 'typesave-form/types/common'
+import type {FormErrors} from 'typesave-form/types/errors'
 import type {
   UseFormHandleSubmit,
   UseFormProps,
@@ -55,7 +55,7 @@ export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormVa
 
   const register: UseFormRegister<FormValue> = useCallback((name, value?) => {
     const path = name.split('.')
-    const val = getValidator(props.validator, path) 
+    const val = getValidator(props.validator, path)
 
     return {
       ref: element => inputMap.current.set(name as string, {element, value}),

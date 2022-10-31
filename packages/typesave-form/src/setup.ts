@@ -79,3 +79,10 @@ export const analyzeValidator = (
   }
   return map
 }
+
+
+export const setup = <FormValue extends TFormValue>(validator: ZodObject<ZodRawShape, any, any, FormValue>) => {
+  const initialError = getInitialError(validator)
+  const analisis = analyzeValidator(validator)
+  return {initialError, analisis}
+}
