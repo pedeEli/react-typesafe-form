@@ -6,8 +6,8 @@ import path from 'path'
 export default defineConfig({
   resolve: {
     alias: {
-      '@typesave-form/react': path.resolve('../packages/react/src'),
-      'typesave-form': path.resolve('../packages/typesave-form/src')
+      '@typesave-form/react': path.resolve('../src'),
+      'typesave-form': path.resolve('../../typesave-form/src')
     }
   },
   plugins: [react()]

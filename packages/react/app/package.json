@@ -1,5 +1,5 @@
 {
-  "name": "react-typesafe-form-app",
+  "name": "@typesafe-form/react-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",

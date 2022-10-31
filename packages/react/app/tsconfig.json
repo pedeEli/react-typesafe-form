@@ -17,8 +17,8 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@typesave-form/react": ["../packages/react/src"],
-      "typesave-form": ["../packages/typesave-form/src"]
+      "@typesave-form/react": ["../src"],
+      "typesave-form": ["../../typesave-form/src"]
     }
   },
   "include": ["src"],
