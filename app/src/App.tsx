@@ -6,11 +6,12 @@ import z from 'zod'
 const validator = z.object({
   persons: z.array(z.object({
     name: z.string()
-  }))
+  })),
+  meta: z.string()
 })
 
 const App = () => {
-  const {handleSubmit, register, errors, reset} = useForm({
+  const {handleSubmit, register, errors, reset, registerArray} = useForm({
     onSubmit: (value) => {
       reset()
       console.log(value)
@@ -34,7 +35,7 @@ const App = () => {
     <div className="p-3"/>
     <form onSubmit={handleSubmit} onReset={reset} className="flex flex-col items-start gap-4">
       {errors.persons.message}
-      <FieldArray render={persons => {
+      <FieldArray {...registerArray('persons')} render={persons => {
         return <>
           <div className="flex gap-2">
             <button type="button" onClick={() => persons.append()}>Append Person</button>
@@ -56,6 +57,8 @@ const App = () => {
           })}
         </>
       }}/>
+      <input type="text" {...register('meta')}/>
+      {errors.meta?.message}
       <div className="flex gap-2">
         <button>Submit</button>
         <button type="reset">Reset</button>

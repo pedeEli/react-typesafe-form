@@ -1,4 +1,6 @@
-import {FormErrors, TFormValue, FormError, Analisis} from './types'
+import {FormErrors, FormError} from './types/errors'
+import {TFormValue} from './types/common'
+import {Analisis} from './types/setup'
 
 export const setError = (errors: FormErrors<TFormValue>, path: Array<string | number>, value: FormError, analisis: Analisis) => {
   const totalPath: string[] = []
@@ -53,9 +55,9 @@ export const deleteIfExists = <FormValue extends TFormValue>(
       obj = obj[key]
     } else if (i !== path.length - 1) {
       obj = obj[key]?.items
-    } else if (obj.message && obj.code) {
-      delete obj.message
-      delete obj.code
+    } else if (type === 'array' && obj[key].message && obj[key].code) {
+      delete obj[key].message
+      delete obj[key].code
       setErrors({...errors})
     }
   }

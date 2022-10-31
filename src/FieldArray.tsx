@@ -1,27 +1,18 @@
-import React, {useState, useRef, useCallback} from 'react'
-
-interface RenderProps {
-  items: Array<{
-    id: string,
-    remove: () => void
-    append: () => void,
-    prepend: () => void
-  }>,
-  append: () => void,
-  prepend: () => void,
-  remove: (id: number | string) => void,
-  insert: (index: number) => void,
-  swap: (id1: number | string, id2: number | string) => void
-}
-
-interface NestedArrayProps {
-  render: (props: RenderProps) => JSX.Element | JSX.Element[]
-}
+import React, {useState, useRef, useCallback, useEffect} from 'react'
+import {NestedArrayProps, RenderProps} from './types/FieldArray'
 
 export const FieldArray = (props: NestedArrayProps) => {
   const ids = useRef(new Set<string>())
   const [items, setItems] = useState<RenderProps['items']>([])
 
+  useEffect(() => {
+    props.element(() => setItems(prev => []))
+    return () => props.element()
+  }, [])
+
+  useEffect(() => {
+    props.onChange()
+  }, [items])
 
   const removeItem = useCallback((id: string) => () => {
     setItems(prev => {
@@ -94,6 +85,7 @@ export const FieldArray = (props: NestedArrayProps) => {
       return [...prev.slice(0, index), createItem(), ...prev.slice(index)]
     })
   }, [])
+
 
   return <>
     {props.render({

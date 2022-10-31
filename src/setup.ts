@@ -1,4 +1,6 @@
-import {TFormValue, FormErrors, Analisis} from './types'
+import type {Analisis} from './types/setup'
+import type {FormErrors} from './types/errors'
+import type {TFormValue} from './types/common'
 import {
   ZodObject,
   ZodRawShape,

@@ -1,4 +1,4 @@
-import {useRef, useState, useMemo} from 'react'
+import {useRef, useState, useMemo, useCallback} from 'react'
 import {
   ZodObject,
   ZodRawShape,
@@ -7,31 +7,35 @@ import {
   ZodArray,
   ZodOptional
 } from 'zod'
-import {
-  TFormValue,
-  UseFormProps,
-  UseFormReturn,
-  FormErrors,
-  UseFormRegister,
-  Analisis
-} from './types'
 import {getInitialError, analyzeValidator} from './setup'
 import {setError, deleteIfExists} from './errors'
 
+import type {TFormValue} from './types/common'
+import type {
+  UseFormHandleSubmit,
+  UseFormProps,
+  UseFormRegister,
+  UseFormReset,
+  UseFormReturn,
+  UseFormRegisterArray
+} from './types/useForm'
+import type {Analisis} from './types/setup'
+import type {FormErrors} from './types/errors'
+
 
 export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormValue>): UseFormReturn<FormValue> => { 
-  const initialError = getInitialError<FormValue>(props.validator)
-
+  const initialError = useMemo(() => getInitialError<FormValue>(props.validator), [props.validator])
   const analisis = useMemo(() => analyzeValidator(props.validator), [props.validator])
 
   const inputMap = useRef(new Map<string, {element: HTMLInputElement | HTMLSelectElement | null, value?: string | number}>())
+  const arrayMap = useRef(new Map<string, {reset: () => void}>())
   const [errors, setErrors] = useState<FormErrors<FormValue>>(initialError)
   const submitFailed = useRef(false)
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: UseFormHandleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const obj = Array.from(inputMap.current.entries()).reduce<object>((acc, [path, {element}]) => {
+    const obj = Array.from(inputMap.current.entries()).reduce<TFormValue>((acc, [path, {element}]) => {
       if (!element)
         return acc
 
@@ -51,13 +55,13 @@ export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormVa
       const {message, code, path} = issue
       setError(acc, path, {message, code}, analisis)
       return acc
-    }, {} as any)
+    }, clone(initialError))
     setErrors(newErrors)
-  }
+  }, [props.validator])
 
-  const register: UseFormRegister<FormValue> = (name, value?) => {
-    const path = (name as string).split('.')
-    const val = getValidator(props.validator, path)
+  const register: UseFormRegister<FormValue> = useCallback((name, value?) => {
+    const path = name.split('.')
+    const val = getValidator(props.validator, path) 
 
     return {
       ref: element => inputMap.current.set(name as string, {element, value}),
@@ -81,27 +85,79 @@ export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormVa
         deleteIfExists(errors, path, analisis, setErrors)
       }
     }
-  }
+  }, [props.validator, errors])
 
-  const reset = () => {
+  const reset: UseFormReset = useCallback(() => {
+    submitFailed.current = false
     inputMap.current.forEach(({element, value}) => {
       if (element)
         element.value = (value ?? '').toString()
     })
-    setErrors(initialError)
-  }
+    arrayMap.current.forEach(array => array.reset())
+    setErrors(prev => initialError)
+  }, [])
+
+  const registerArray: UseFormRegisterArray<FormValue> = useCallback(name => {
+    const path = name.split('.')
+    const val = getValidator(props.validator, path)
+    if (!(val instanceof ZodArray))
+      throw new Error(`${name} is not an array`)
+
+    return {
+      element: reset => {
+        if (reset) {
+          arrayMap.current.set(name, {reset})
+          return
+        }
+        arrayMap.current.delete(name)
+      },
+      onChange: () => {
+        if (!submitFailed.current)
+          return
+        
+        const obj = Array.from(inputMap.current.entries()).reduce<TFormValue>((acc, [path, {element}]) => {
+          if (!element || !path.startsWith(name))
+            return acc
+    
+          const value = element.type === 'number' ? parseInt(element.value) : element.value
+          setValueAt(acc, path.split('.'), value, analisis)
+          return acc
+        }, {})
+        
+        const value = getValueAt(obj, path)
+        const result = val.safeParse(value)
+        if (result.success) {
+          deleteIfExists(errors, path, analisis, setErrors)
+          return
+        }
+        
+        const error = result.error.errors.find(issue => issue.path.length === 0)
+        if (error) {
+          setErrors(prev => {
+            const {message, code} = error
+            setError(prev, path, {message, code}, analisis)
+            return {...prev}
+          })
+          return
+        }
+        
+        deleteIfExists(errors, path, analisis, setErrors)
+      }
+    }
+  }, [props.validator, errors])
 
   return {
     handleSubmit,
     register,
     reset,
-    errors
+    errors,
+    registerArray
   }
 }
 
 
 
-const setValueAt = (obj: Record<string, any>, path: Array<string | number>, value: any, analisis: Analisis, totalPath: string[] = []): void => {
+const setValueAt = (obj: TFormValue, path: Array<string | number>, value: any, analisis: Analisis, totalPath: string[] = []): void => {
   if (path.length === 0)
     throw new Error('paths length cannot be zero')
 
@@ -117,6 +173,14 @@ const setValueAt = (obj: Record<string, any>, path: Array<string | number>, valu
   const subObj = obj[key] ?? (type === 'array' ? [] : {})
   obj[key] = subObj
   setValueAt(subObj, path, value, analisis, newTotalPath)
+}
+
+const getValueAt = (obj: TFormValue, path: string[]) => {
+  for (let i = 0; i < path.length; i++) {
+    const key = path[i]
+    obj = obj[key]
+  }
+  return obj
 }
 
 const getValidator = (validator: ZodObject<ZodRawShape, any, any, TFormValue>, path: Array<string>): ZodTypeAny => {
@@ -139,4 +203,15 @@ const getValidator = (validator: ZodObject<ZodRawShape, any, any, TFormValue>, p
   }
 
   return val
+}
+
+const clone = <T>(value: T): T => {
+  if (Array.isArray(value))
+    return value.map(clone) as T
+  if (typeof value === 'object')
+    return Object.keys(value as object).reduce<TFormValue>((acc, key) => {
+      acc[key] = clone((value as any)[key])
+      return acc
+    }, {} as TFormValue) as T
+  return value
 }
