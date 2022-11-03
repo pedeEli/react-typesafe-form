@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "version": "1.0.0",
   "scripts": {
     "build:typesafe-form": "pnpm --filter typesafe-form build",
     "build:react": "pnpm --filter @typesafe-form/react build",
