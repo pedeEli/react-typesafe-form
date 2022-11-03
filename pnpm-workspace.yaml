@@ -1,0 +1,4 @@
+packages:
+  - 'packages/*'
+  - 'packages/react/app'
+  - 'packages/svelte/app'

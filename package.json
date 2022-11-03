@@ -1,3 +1,9 @@
 {
-  "name": "root"
+  "name": "root",
+  "scripts": {
+    "build:typesafe-form": "pnpm --filter typesafe-form build",
+    "build:react": "pnpm --filter @typesafe-form/react build",
+    "build:svelte": "pnpm --filter @typesafe-form/svelte build",
+    "build": "pnpm run build:typesafe-form && pnpm run build:react && pnpm run build:svelte"
+  }
 }

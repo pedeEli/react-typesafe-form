@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useForm, FieldArray} from '@typesave-form/react'
+import {useForm, FieldArray} from '@typesafe-form/react'
 import z from 'zod'
 
 

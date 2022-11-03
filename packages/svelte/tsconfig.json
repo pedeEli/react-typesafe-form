@@ -6,7 +6,6 @@
     "outDir": "./dist",
     "noImplicitAny": true,
     "lib": ["dom", "DOM.Iterable", "ESNext"],
-    "jsx": "react",
     "strict": true,
     "declaration": true,
     "moduleResolution": "Node",

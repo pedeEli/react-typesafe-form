@@ -1,0 +1,19 @@
+{
+  "name": "@typesafe-form/svelte",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "svelte": "^3.52.0",
+    "typesafe-form": "workspace:*",
+    "typescript": "^4.8.4",
+    "zod": "^3.19.1"
+  }
+}

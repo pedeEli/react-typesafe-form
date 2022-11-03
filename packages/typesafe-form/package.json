@@ -1,25 +1,26 @@
 {
-  "name": "@typesafe-form/react",
-  "version": "1.0.0",
+  "name": "typesafe-form",
+  "version": "0.0.1",
   "description": "",
+  "type": "module",
   "exports": {
-    ".": "./dist/index.js",
+    "./utils": "./dist/utils.js",
+    "./setup": "./dist/setup.js",
+    "./errors": "./dist/errors.js",
     "./types": "./src/types"
   },
+  "files": ["dist"],
   "scripts": {
     "build": "rimraf dist && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "react": "^18.2.0",
-    "typesafe-form": "workspace:*",
-    "zod": "^3.19.1"
-  },
   "devDependencies": {
-    "@types/react": "^18.0.24",
     "rimraf": "^3.0.2",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "zod": "^3.19.1"
   }
 }

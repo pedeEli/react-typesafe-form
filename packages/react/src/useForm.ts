@@ -1,15 +1,15 @@
 import {useRef, useState, useMemo, useCallback} from 'react'
 import {ZodArray} from 'zod'
 
-import {getInitialError, analyzeValidator} from 'typesave-form/setup'
-import {setError, deleteIfExists} from 'typesave-form/errors'
-import {clone, getValidator, getValueAt, setValueAt} from 'typesave-form/utils'
+import {getInitialError, analyzeValidator} from 'typesafe-form/setup'
+import {setError, deleteIfExists} from 'typesafe-form/errors'
+import {clone, getValidator, getValueAt, setValueAt} from 'typesafe-form/utils'
 
-import type {TFormValue} from 'typesave-form/types/common'
-import type {FormErrors} from 'typesave-form/types/errors'
+import type {TFormValue} from 'typesafe-form/types/common'
+import type {FormErrors} from 'typesafe-form/types/errors'
+import type {FormProps} from 'typesafe-form/types/form'
 import type {
   UseFormHandleSubmit,
-  UseFormProps,
   UseFormRegister,
   UseFormReset,
   UseFormReturn,
@@ -17,7 +17,7 @@ import type {
 } from './types/useForm'
 
 
-export const useForm = <FormValue extends TFormValue>(props: UseFormProps<FormValue>): UseFormReturn<FormValue> => { 
+export const useForm = <FormValue extends TFormValue>(props: FormProps<FormValue>): UseFormReturn<FormValue> => { 
   const initialError = useMemo(() => getInitialError<FormValue>(props.validator), [props.validator])
   const analisis = useMemo(() => analyzeValidator(props.validator), [props.validator])
 
