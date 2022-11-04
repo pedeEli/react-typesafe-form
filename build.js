@@ -19,8 +19,9 @@ const copyDir = async (origin, destination) => {
     const stats = await fs.lstat(filePath)
     const destinationPath = path.join(destination, file)
     
-    if (stats.isDirectory())
+    if (stats.isDirectory()) {
       return await copyDir(filePath, destinationPath)
+    }
 
     const fileContent = await fs.readFile(filePath)
     return await fs.writeFile(destinationPath, fileContent)
@@ -38,11 +39,14 @@ const copyPackage = async () => {
   const filePath = path.resolve('package.json')
   const fileContent = await fs.readFile(filePath, 'utf-8')
   const fileJson = JSON.parse(fileContent)
-  fileJson.name = fileJson.name.replace('-temp', '')
+  fileJson.name = fileJson.name.replace('-src', '')
   await fs.writeFile(path.resolve('package/package.json'), JSON.stringify(fileJson, null, 2), 'utf-8')
 }
 
 
 await copyDir(distPath, packagePath)
-await copyDir(srcTypesPath, packageTypesPath)
+try {
+  await fs.access(srcTypesPath)
+  await copyDir(srcTypesPath, packageTypesPath)
+} catch (e) {}
 await copyPackage()

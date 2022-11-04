@@ -1,10 +1,10 @@
 {
-  "name": "@typesafe-form/base-temp",
+  "name": "@typesafe-form/base-src",
   "version": "1.0.3",
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "rimraf package && rimraf dist && tsc && node ./build.js"
+    "build": "rimraf dist package && tsc && node ../../build.js"
   },
   "keywords": [],
   "author": "",

@@ -1,10 +1,11 @@
 {
   "name": "root",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "build:base": "pnpm --filter @typesafe-form/base-temp build",
-    "build:react": "pnpm --filter @typesafe-form/react-temp build",
-    "build:svelte": "pnpm --filter @typesafe-form/svelte build",
+    "build:base": "pnpm --filter @typesafe-form/base-src build",
+    "build:react": "pnpm --filter @typesafe-form/react-src build",
+    "build:svelte": "pnpm --filter @typesafe-form/svelte-src build",
     "build": "pnpm run build:base && pnpm run build:react && pnpm run build:svelte"
   }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "@typesafe-form/react-temp",
+  "name": "@typesafe-form/react-src",
   "version": "1.0.3",
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "rimraf package && rimraf dist && tsc && node ./build.js"
+    "build": "rimraf dist package && tsc && node ../../build.js"
   },
   "keywords": [],
   "author": "",

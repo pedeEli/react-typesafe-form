@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "inlineSourceMap": true,
+    "noImplicitAny": true,
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
+    "strict": true,
+    "declaration": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+  }
+}
