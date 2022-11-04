@@ -44,7 +44,7 @@ const App = () => {
           {persons.items.map((person, index) => {
             return <React.Fragment key={person.id}>
               <div className="flex gap-4 items-center">
-                <label htmlFor={`persons.${index}.name`} className="test-lg">Name</label>
+                <label htmlFor={`persons.${index}.name`} className="text-lg">Name</label>
                 <input type="text" id={`persons.${index}.name`} {...register(`persons.${index}.name`)}/>
                 <button type="button" onClick={() => person.remove()}>Delete</button>
                 <button type="button" onClick={() => person.append()}>Append</button>

@@ -13,12 +13,7 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@typesafe-form/svelte": ["../src"],
-      "typesafe-form/*": ["../../typesafe-form/src/*"]
-    }
+    "noEmit": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
