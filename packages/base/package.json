@@ -1,5 +1,5 @@
 {
-  "name": "@typesafe-form/react-temp",
+  "name": "@typesafe-form/base-temp",
   "version": "1.0.3",
   "description": "",
   "type": "module",
@@ -9,14 +9,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@typesafe-form/base": "workspace:*",
-    "react": "^18.2.0",
-    "zod": "^3.19.1"
-  },
   "devDependencies": {
-    "@types/react": "^18.0.24",
     "rimraf": "^3.0.2",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "zod": "^3.19.1"
   }
 }

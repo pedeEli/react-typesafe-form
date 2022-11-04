@@ -1,7 +1,7 @@
-import type {TFormValue} from 'typesafe-form/types/common'
+import type {TFormValue} from '@typesafe-form/base/types/common'
 import type {ZodObject, ZodRawShape} from 'zod'
-import type {FormPath, FormArrayPath} from 'typesafe-form/types/path'
-import type {FormErrors} from 'typesafe-form/types/errors'
+import type {FormPath, FormArrayPath} from '@typesafe-form/base/types/path'
+import type {FormErrors} from '@typesafe-form/base/types/errors'
 
 export type UseFormProps<
   FormValue extends TFormValue

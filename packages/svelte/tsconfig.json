@@ -12,8 +12,8 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "typesafe-form/types/*": ["../typesafe-form/src/types/*"],
-      "typesafe-form/*": ["../typesafe-form/dist/*"]
+      "@typesafe-form/base/types/*": ["../base/src/types/*"],
+      "@typesafe-form/base/*": ["../base/dist/*"]
     }
   },
   "include": [

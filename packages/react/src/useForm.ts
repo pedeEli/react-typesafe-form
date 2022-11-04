@@ -1,13 +1,13 @@
 import {useRef, useState, useMemo, useCallback} from 'react'
 import {ZodArray} from 'zod'
 
-import {getInitialError, analyzeValidator} from 'typesafe-form/setup'
-import {setError, deleteIfExists} from 'typesafe-form/errors'
-import {clone, getValidator, getValueAt, setValueAt} from 'typesafe-form/utils'
+import {getInitialError, analyzeValidator} from '@typesafe-form/base/setup'
+import {setError, deleteIfExists} from '@typesafe-form/base/errors'
+import {clone, getValidator, getValueAt, setValueAt} from '@typesafe-form/base/utils'
 
-import type {TFormValue} from 'typesafe-form/types/common'
-import type {FormErrors} from 'typesafe-form/types/errors'
-import type {FormProps} from 'typesafe-form/types/form'
+import type {TFormValue} from '@typesafe-form/base/types/common'
+import type {FormErrors} from '@typesafe-form/base/types/errors'
+import type {FormProps} from '@typesafe-form/base/types/form'
 import type {
   UseFormHandleSubmit,
   UseFormRegister,

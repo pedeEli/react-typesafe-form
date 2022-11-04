@@ -10,12 +10,7 @@
     "strict": true,
     "declaration": true,
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "typesafe-form/types/*": ["../typesafe-form/src/types/*"],
-      "typesafe-form/*": ["../typesafe-form/dist/*"]
-    }
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src"

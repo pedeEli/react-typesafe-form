@@ -8,14 +8,14 @@ importers:
   packages/react:
     specifiers:
       '@types/react': ^18.0.24
+      '@typesafe-form/base': workspace:^1.0.2
       react: ^18.2.0
       rimraf: ^3.0.2
-      typesafe-form: workspace:*
       typescript: ^4.8.4
       zod: ^3.19.1
     dependencies:
+      '@typesafe-form/base': link:../base/package
       react: 18.2.0
-      typesafe-form: link:../typesafe-form
       zod: 3.19.1
     devDependencies:
       '@types/react': 18.0.24
@@ -27,7 +27,7 @@ importers:
       '@types/node': ^18.8.3
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
-      '@typesafe-form/react': workspace:*
+      '@typesafe-form/react': workspace:^1.0.2
       '@vitejs/plugin-react': ^2.1.0
       autoprefixer: ^10.4.12
       postcss: ^8.4.17
@@ -38,7 +38,7 @@ importers:
       vite: ^3.1.0
       zod: ^3.19.1
     dependencies:
-      '@typesafe-form/react': link:..
+      '@typesafe-form/react': link:../package
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -52,6 +52,23 @@ importers:
       typescript: 4.8.4
       vite: 3.2.2
       zod: 3.19.1
+
+  packages/react/package:
+    specifiers:
+      '@types/react': ^18.0.24
+      '@typesafe-form/base': workspace:*
+      react: ^18.2.0
+      rimraf: ^3.0.2
+      typescript: ^4.8.4
+      zod: ^3.19.1
+    dependencies:
+      '@typesafe-form/base': link:../../base/package
+      react: 18.2.0
+      zod: 3.19.1
+    devDependencies:
+      '@types/react': 18.0.24
+      rimraf: 3.0.2
+      typescript: 4.8.4
 
   packages/svelte:
     specifiers:

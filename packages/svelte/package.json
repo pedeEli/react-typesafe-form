@@ -12,7 +12,7 @@
   "devDependencies": {
     "rimraf": "^3.0.2",
     "svelte": "^3.52.0",
-    "typesafe-form": "workspace:*",
+    "@typesafe-form/base": "workspace:*",
     "typescript": "^4.8.4",
     "zod": "^3.19.1"
   }

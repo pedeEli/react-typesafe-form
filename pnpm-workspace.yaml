@@ -1,4 +1,7 @@
 packages:
   - 'packages/*'
+  - 'packages/base/package'
   - 'packages/react/app'
+  - 'packages/react/package'
   - 'packages/svelte/app'
+  - 'packages/svelte/package'

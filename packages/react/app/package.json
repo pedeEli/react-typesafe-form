@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@typesafe-form/react": "workspace:*",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@typesafe-form/react": "workspace:*"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.8.3",
